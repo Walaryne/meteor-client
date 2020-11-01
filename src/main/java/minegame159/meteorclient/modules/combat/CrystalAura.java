@@ -1,17 +1,11 @@
 package minegame159.meteorclient.modules.combat;
 
-//Updated by squidoodly 31/04/2020
-//Updated by squidoodly 19/06/2020
-//Updated by squidoodly 24/07/2020
-//Updated by squidoodly 26-28/07/2020
-
 import com.google.common.collect.Streams;
 import me.zero.alpine.event.EventPriority;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
-import minegame159.meteorclient.friends.FriendManager;
 import minegame159.meteorclient.events.RenderEvent;
-import minegame159.meteorclient.events.TickEvent;
+import minegame159.meteorclient.events.PostTickEvent;
 import minegame159.meteorclient.modules.Category;
 import minegame159.meteorclient.modules.ToggleModule;
 import minegame159.meteorclient.rendering.ShapeBuilder;
@@ -34,10 +28,7 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class CrystalAura extends ToggleModule {
     public enum Mode{
@@ -266,7 +257,7 @@ public class CrystalAura extends ToggleModule {
     }
 
     @EventHandler
-    private final Listener<TickEvent> onTick = new Listener<>(event -> {
+    private final Listener<PostTickEvent> onTick = new Listener<>(event -> {
         for (Iterator<RenderBlock> it = renderBlocks.iterator(); it.hasNext();) {
             RenderBlock renderBlock = it.next();
 
@@ -321,34 +312,15 @@ public class CrystalAura extends ToggleModule {
                 });
         if (!smartDelay.get() && delayLeft > 0) return;
         if (place.get() && (!singlePlace.get() || current == null)) {
-            List<LivingEntity> validEntities = new ArrayList<>();
-            LivingEntity target = null;
-            Iterator<Entity> entitiesList = mc.world.getEntities().iterator();
-            LivingEntity livingEntity;
-            for (Entity entity = entitiesList.next(); entitiesList.hasNext(); entity = entitiesList.next()) {
-                if (entities.get().contains(entity.getType()) && entity.distanceTo(mc.player) <= 10){
-                    if (entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() > 0){
-                        livingEntity = (LivingEntity)entity;
-                        if (entity instanceof PlayerEntity) {
-                            if (entity.getDisplayName().equals(mc.player.getDisplayName())
-                                    || !(FriendManager.INSTANCE.attack(((PlayerEntity) entity)))
-                                    || ((PlayerEntity) entity).isCreative() || entity.isSpectator()) {
-                                continue;
-                            }
-                        }
-                        validEntities.add(livingEntity);
-                    }
-                }
-            }
-            if (validEntities.isEmpty()) {
-                return;
-            }
-            for (int i = 0; i < validEntities.size(); i++) {
-                if (target == null) target = validEntities.get(i);
-                if (validEntities.get(i).distanceTo(mc.player) < target.distanceTo(mc.player)) {
-                    target = validEntities.get(i);
-                }
-            }
+            Optional<LivingEntity> livingEntity = Streams.stream(mc.world.getEntities())
+                    .filter(Entity::isAlive)
+                    .filter(entity -> entity instanceof LivingEntity)
+                    .filter(entity -> entities.get().contains(entity.getType()))
+                    .min(Comparator.comparingDouble(o -> o.distanceTo(mc.player)))
+                    .filter(entity -> entity.distanceTo(mc.player) <= breakRange.get() * 2)
+                    .map(entity -> (LivingEntity) entity);
+            if (!livingEntity.isPresent()) return;
+            LivingEntity target = livingEntity.get();
             findValidBlocks(target);
             if (bestBlock == null) return;
             if (facePlace.get() && Math.sqrt(target.squaredDistanceTo(bestBlock)) <= 2) {
