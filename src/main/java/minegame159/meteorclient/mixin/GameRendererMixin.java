@@ -63,7 +63,7 @@ public abstract class GameRendererMixin {
 
         client.getProfiler().swap("meteor-client_render");
 
-        RenderEvent event = EventStore.renderEvent(tickDelta, camera.getPos().x, camera.getPos().y, camera.getPos().z);
+        RenderEvent event = EventStore.renderEvent(tickDelta, camera.getPos().x, camera.getPos().y, camera.getPos().z, matrix);
 
         Renderer.begin(event);
         MeteorClient.EVENT_BUS.post(event);
@@ -95,6 +95,17 @@ public abstract class GameRendererMixin {
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void onBobViewWhenHurt(MatrixStack matrixStack, float f, CallbackInfo info) {
         if (ModuleManager.INSTANCE.get(NoRender.class).noHurtCam()) info.cancel();
+    }
+
+    @Inject(at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/render/GameRenderer;bobView(Lnet/minecraft/client/util/math/MatrixStack;F)V",
+            ordinal = 0),
+            method = {
+                    "renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V"},
+            cancellable = true)
+    private void onRenderWorldViewBobbing(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo info)
+    {
+        if(ModuleManager.INSTANCE.get(NoRender.class).noBobbingTracers()) info.cancel();
     }
 
     @Inject(method = "showFloatingItem", at = @At("HEAD"), cancellable = true)

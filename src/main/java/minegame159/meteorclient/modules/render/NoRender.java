@@ -176,6 +176,14 @@ public class NoRender extends ToggleModule {
             .defaultValue(false)
             .build()
     );
+
+    private final Setting<Boolean> noBobbingTracers = sgGeneral.add(new BoolSetting.Builder()
+            .name("no-bobbing-tracers")
+            .description("Stops tracers from swaying.")
+            .defaultValue(false)
+            .build()
+    );
+
     public NoRender() {
         super(Category.Render, "no-render", "Disables some things from rendering.");
     }
@@ -275,4 +283,6 @@ public class NoRender extends ToggleModule {
     public boolean noGuiBackground() {
         return isActive() && noGuiBackground.get();
     }
+
+    public boolean noBobbingTracers() { return isActive() && noBobbingTracers.get(); }
 }

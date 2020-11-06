@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.sound.SoundInstance;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MovementType;
@@ -127,11 +128,12 @@ public class EventStore {
         return render2DEvent;
     }
 
-    public static RenderEvent renderEvent(float tickDelta, double offsetX, double offsetY, double offsetZ) {
+    public static RenderEvent renderEvent(float tickDelta, double offsetX, double offsetY, double offsetZ, MatrixStack matrixStack) {
         renderEvent.tickDelta = tickDelta;
         renderEvent.offsetX = offsetX;
         renderEvent.offsetY = offsetY;
         renderEvent.offsetZ = offsetZ;
+        renderEvent.matrixStack = matrixStack;
         return renderEvent;
     }
 

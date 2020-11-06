@@ -1,3 +1,5 @@
 accessWidener	v1	named
 
 Accessible   class   net/minecraft/client/render/RenderLayer$OutlineMode
+Accessible   method  net/minecraft/client/util/math/MatrixStack$Entry  <init>  (Lnet/minecraft/util/math/Matrix4f;Lnet/minecraft/util/math/Matrix3f;)V
+Accessible   field   net/minecraft/client/util/math/MatrixStack  stack  Ljava/util/Deque;
