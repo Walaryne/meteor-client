@@ -39,6 +39,8 @@ public abstract class GameRendererMixin {
 
     @Shadow public abstract void updateTargetedEntity(float tickDelta);
 
+    @Shadow protected abstract void bobView(MatrixStack matrixStack, float f);
+
     private boolean a = false;
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
@@ -97,15 +99,15 @@ public abstract class GameRendererMixin {
         if (ModuleManager.INSTANCE.get(NoRender.class).noHurtCam()) info.cancel();
     }
 
-    @Inject(at = @At(value = "INVOKE",
+    @Redirect(at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/render/GameRenderer;bobView(Lnet/minecraft/client/util/math/MatrixStack;F)V",
             ordinal = 0),
             method = {
-                    "renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V"},
-            cancellable = true)
-    private void onRenderWorldViewBobbing(float tickDelta, long limitTime, MatrixStack matrices, CallbackInfo info)
+                    "renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V"})
+    private void onRenderWorldViewBobbing(GameRenderer gameRenderer, MatrixStack matrixStack, float partialTicks)
     {
-        if(ModuleManager.INSTANCE.get(NoRender.class).noBobbingTracers()) info.cancel();
+        if(ModuleManager.INSTANCE.get(NoRender.class).noBobbingTracers()) return;
+        bobView(matrixStack, partialTicks);
     }
 
     @Inject(method = "showFloatingItem", at = @At("HEAD"), cancellable = true)
