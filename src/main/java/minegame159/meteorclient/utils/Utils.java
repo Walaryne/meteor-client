@@ -1,5 +1,6 @@
 package minegame159.meteorclient.utils;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import minegame159.meteorclient.gui.GuiConfig;
@@ -11,6 +12,8 @@ import minegame159.meteorclient.modules.ModuleManager;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.options.ServerList;
 import net.minecraft.client.render.Camera;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
@@ -64,6 +67,52 @@ public class Utils {
         DecimalFormatSymbols dfs = new DecimalFormatSymbols();
         dfs.setDecimalSeparator('.');
         df.setDecimalFormatSymbols(dfs);
+    }
+
+    public static void addMeteorPvpToServerList() {
+        ServerList servers = new ServerList(mc);
+        servers.loadFile();
+
+        boolean contains = false;
+        for (int i = 0; i < servers.size(); i++) {
+            ServerInfo server = servers.get(i);
+
+            if (server.address.contains("pvp.meteorclient.com")) {
+                contains = true;
+                break;
+            }
+        }
+
+        if (!contains) {
+            servers.add(new ServerInfo("Meteor Pvp", "pvp.meteorclient.com", false));
+            servers.saveFile();
+        }
+    }
+
+    public static int getWindowWidth() {
+        return mc.getWindow().getFramebufferWidth();
+    }
+
+    public static int getWindowHeight() {
+        return mc.getWindow().getFramebufferHeight();
+    }
+
+    public static void unscaledProjection() {
+        RenderSystem.matrixMode(5889);
+        RenderSystem.loadIdentity();
+        RenderSystem.ortho(0.0D, MinecraftClient.getInstance().getWindow().getFramebufferWidth(), MinecraftClient.getInstance().getWindow().getFramebufferHeight(), 0.0D, 1000.0D, 3000.0D);
+        RenderSystem.matrixMode(5888);
+        RenderSystem.loadIdentity();
+        RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
+    }
+
+    public static void scaledProjection() {
+        RenderSystem.matrixMode(5889);
+        RenderSystem.loadIdentity();
+        RenderSystem.ortho(0.0D, MinecraftClient.getInstance().getWindow().getFramebufferWidth() / MinecraftClient.getInstance().getWindow().getScaleFactor(), MinecraftClient.getInstance().getWindow().getFramebufferHeight() / MinecraftClient.getInstance().getWindow().getScaleFactor(), 0.0D, 1000.0D, 3000.0D);
+        RenderSystem.matrixMode(5888);
+        RenderSystem.loadIdentity();
+        RenderSystem.translatef(0.0F, 0.0F, -2000.0F);
     }
 
     public static Dimension getDimension() {

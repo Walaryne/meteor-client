@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import minegame159.meteorclient.MeteorClient;
 import minegame159.meteorclient.events.EventStore;
 import minegame159.meteorclient.modules.ModuleManager;
-import minegame159.meteorclient.modules.render.HUD;
 import minegame159.meteorclient.modules.render.NoRender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -45,15 +44,12 @@ public abstract class InGameHudMixin {
 
         GL11.glDisable(GL11.GL_LINE_SMOOTH);
         RenderSystem.lineWidth(1);
-        RenderSystem.disableBlend();
-        RenderSystem.disableBlend();
 
         RenderSystem.popMatrix();
     }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)
     private void onRenderStatusEffectOverlay(CallbackInfo info) {
-        if (ModuleManager.INSTANCE.isActive(HUD.class) && ModuleManager.INSTANCE.get(HUD.class).potionTimers.get()) info.cancel();
         if (ModuleManager.INSTANCE.get(NoRender.class).noPotionIcons()) info.cancel();
     }
 

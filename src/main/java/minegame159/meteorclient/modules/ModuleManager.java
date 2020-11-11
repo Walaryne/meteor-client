@@ -1,5 +1,6 @@
 package minegame159.meteorclient.modules;
 
+import com.mojang.serialization.Lifecycle;
 import me.zero.alpine.event.EventPriority;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listenable;
@@ -15,6 +16,7 @@ import minegame159.meteorclient.modules.misc.*;
 import minegame159.meteorclient.modules.movement.*;
 import minegame159.meteorclient.modules.player.*;
 import minegame159.meteorclient.modules.render.*;
+import minegame159.meteorclient.modules.render.hud.HUD;
 import minegame159.meteorclient.settings.Setting;
 import minegame159.meteorclient.settings.SettingGroup;
 import minegame159.meteorclient.utils.Chat;
@@ -25,14 +27,19 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.*;
 
 public class ModuleManager extends Savable<ModuleManager> implements Listenable {
     public static final Category[] CATEGORIES = { Category.Combat, Category.Player, Category.Movement, Category.Render, Category.Misc };
     public static ModuleManager INSTANCE;
+    public static final ModuleRegistry REGISTRY = new ModuleRegistry();
 
     private final Map<Class<? extends Module>, Module> modules = new HashMap<>();
     private final Map<Category, List<Module>> groups = new HashMap<>();
@@ -44,6 +51,8 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
 
     public ModuleManager() {
         super(new File(MeteorClient.FOLDER, "modules.nbt"));
+
+        INSTANCE = this;
 
         initCombat();
         initPlayer();
@@ -253,7 +262,6 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new FastUse());
         addModule(new AutoRespawn());
         addModule(new AntiFire());
-        addModule(new AutoMend());
         addModule(new AutoGap());
         addModule(new AutoReplenish());
         addModule(new AntiHunger());
@@ -316,7 +324,6 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new Freecam());
         addModule(new Tracers());
         addModule(new Nametags());
-        addModule(new InventoryViewer());
         addModule(new HoleESP());
         addModule(new LogoutSpots());
         addModule(new Trajectories());
@@ -354,7 +361,6 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new Timer());
         addModule(new Suffix());
         addModule(new MessageAura());
-        addModule(new AutoMountBypassDupe());
         addModule(new Nuker());
         addModule(new SoundBlocker());
         addModule(new AntiChunkBan());
@@ -362,5 +368,89 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new BetterChat());
         addModule(new FancyChat());
         addModule(new OffHandCrash());
+    }
+
+    public static class ModuleRegistry extends Registry<ToggleModule> {
+        public ModuleRegistry() {
+            super(RegistryKey.ofRegistry(new Identifier("meteor-client", "modules")), Lifecycle.stable());
+        }
+
+        @Nullable
+        @Override
+        public Identifier getId(ToggleModule entry) {
+            return null;
+        }
+
+        @Override
+        public Optional<RegistryKey<ToggleModule>> getKey(ToggleModule entry) {
+            return Optional.empty();
+        }
+
+        @Override
+        public int getRawId(@Nullable ToggleModule entry) {
+            return 0;
+        }
+
+        @Nullable
+        @Override
+        public ToggleModule get(@Nullable RegistryKey<ToggleModule> key) {
+            return null;
+        }
+
+        @Nullable
+        @Override
+        public ToggleModule get(@Nullable Identifier id) {
+            return null;
+        }
+
+        @Override
+        protected Lifecycle getEntryLifecycle(ToggleModule object) {
+            return null;
+        }
+
+        @Override
+        public Lifecycle getLifecycle() {
+            return null;
+        }
+
+        @Override
+        public Set<Identifier> getIds() {
+            return null;
+        }
+
+        @Override
+        public Set<Map.Entry<RegistryKey<ToggleModule>, ToggleModule>> getEntries() {
+            return null;
+        }
+
+        @Override
+        public boolean containsId(Identifier id) {
+            return false;
+        }
+
+        @Nullable
+        @Override
+        public ToggleModule get(int index) {
+            return null;
+        }
+
+        @Override
+        public Iterator<ToggleModule> iterator() {
+            return new ToggleModuleIterator();
+        }
+
+        private static class ToggleModuleIterator implements Iterator<ToggleModule> {
+            private final Iterator<Module> iterator = ModuleManager.INSTANCE.getAll().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return iterator.hasNext();
+            }
+
+            @Override
+            public ToggleModule next() {
+                return (ToggleModule) iterator.next();
+            }
+        }
     }
 }
