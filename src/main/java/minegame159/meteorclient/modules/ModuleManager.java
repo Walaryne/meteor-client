@@ -80,7 +80,8 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
     }
 
     public boolean isActive(Class<? extends ToggleModule> klass) {
-        return get(klass).isActive();
+        ToggleModule module = get(klass);
+        return module != null && module.isActive();
     }
 
     public List<Module> getGroup(Category category) {
@@ -242,7 +243,6 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new SmartSurround());
         addModule(new Surround());
         addModule(new Trigger());
-        addModule(new AutoExp());
         addModule(new AimAssist());
         addModule(new AutoArmor());
         addModule(new AntiBed());
@@ -262,6 +262,7 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new FastUse());
         addModule(new AutoRespawn());
         addModule(new AntiFire());
+        addModule(new AutoMend());
         addModule(new AutoGap());
         addModule(new AutoReplenish());
         addModule(new AntiHunger());
