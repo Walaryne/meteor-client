@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import java.util.Objects;
@@ -6,7 +11,9 @@ public class TextureRegion {
     public double x, y;
     public double width, height;
 
-    private Color color, colorHovered, colorPressed;
+    private final Color color;
+    private final Color colorHovered;
+    private final Color colorPressed;
 
     public TextureRegion(double textureWidth, double textuerHeight, int x, int y, int width, int height, Color color, Color colorHovered, Color colorPressed) {
         this.x = x / textureWidth;

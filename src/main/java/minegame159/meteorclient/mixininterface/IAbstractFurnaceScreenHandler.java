@@ -1,9 +1,14 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixininterface;
 
 import net.minecraft.item.ItemStack;
 
 public interface IAbstractFurnaceScreenHandler {
-    public boolean isSmeltableI(ItemStack itemStack);
+    boolean isSmeltableI(ItemStack itemStack);
 
-    public boolean isFuelI(ItemStack itemStack);
+    boolean isFuelI(ItemStack itemStack);
 }

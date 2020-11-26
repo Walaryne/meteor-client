@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.macros;
 
 import me.zero.alpine.event.EventPriority;
@@ -8,7 +13,7 @@ import minegame159.meteorclient.events.EventStore;
 import minegame159.meteorclient.events.KeyEvent;
 import minegame159.meteorclient.gui.screens.WindowScreen;
 import minegame159.meteorclient.gui.widgets.*;
-import org.lwjgl.glfw.GLFW;
+import minegame159.meteorclient.utils.Utils;
 
 public class EditMacroScreen extends WindowScreen {
     private Macro macro;
@@ -92,7 +97,7 @@ public class EditMacroScreen extends WindowScreen {
 
     private String getKeyLabelText() {
         if (waitingForKey) return "Press any key";
-        return "Key: " + (macro.key == -1 ? "none" : GLFW.glfwGetKeyName(macro.key, 0));
+        return "Key: " + (macro.key == -1 ? "none" : Utils.getKeyName(macro.key));
     }
 
     @EventHandler

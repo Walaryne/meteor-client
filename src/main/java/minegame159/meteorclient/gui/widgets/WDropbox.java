@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.widgets;
 
 import minegame159.meteorclient.gui.GuiConfig;
@@ -52,9 +57,10 @@ public class WDropbox<T extends Enum<?>> extends WWidget {
     protected void onCalculateSize(GuiRenderer renderer) {
         root.calculateSize(RENDERER);
 
+        double s = GuiConfig.INSTANCE.guiScale;
         valueNameWidth = renderer.textWidth(valueName);
-        width = 6 + root.width + 4 + renderer.textHeight() + 6;
-        height = 6 + renderer.textHeight() + 6;
+        width = 6 * s + root.width + 4 * s + renderer.textHeight() + 6 * s;
+        height = 6 * s + renderer.textHeight() + 6 * s;
     }
 
     @Override

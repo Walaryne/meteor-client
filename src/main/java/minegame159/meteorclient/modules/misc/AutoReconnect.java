@@ -1,9 +1,14 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.misc;
 
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
 import minegame159.meteorclient.MeteorClient;
-import minegame159.meteorclient.events.GameJoinedEvent;
+import minegame159.meteorclient.events.ConnectToServerEvent;
 import minegame159.meteorclient.events.OpenScreenEvent;
 import minegame159.meteorclient.mixininterface.IAbstractButtonWidget;
 import minegame159.meteorclient.mixininterface.IDisconnectedScreen;
@@ -35,13 +40,13 @@ public class AutoReconnect extends ToggleModule {
 
     public AutoReconnect() {
         super(Category.Misc, "auto-reconnect", "Automatically reconnects when kicked from server.");
-        MeteorClient.EVENT_BUS.subscribe(new Listener<GameJoinedEvent>(event -> {
+        MeteorClient.EVENT_BUS.subscribe(new Listener<ConnectToServerEvent>(event -> {
             lastServerInfo = mc.isInSingleplayer() ? null : mc.getCurrentServerEntry();
         }));
     }
 
     @EventHandler
-    private Listener<OpenScreenEvent> onOpenScreen = new Listener<>(event -> {
+    private final Listener<OpenScreenEvent> onOpenScreen = new Listener<>(event -> {
         if (lastServerInfo == null) return;
         if (!(event.screen instanceof DisconnectedScreen)) return;
         if (event.screen instanceof AutoReconnectScreen) return;
@@ -51,7 +56,7 @@ public class AutoReconnect extends ToggleModule {
     });
 
     private class AutoReconnectScreen extends DisconnectedScreen {
-        private int reasonHeight;
+        private final int reasonHeight;
 
         private ButtonWidget reconnectBtn;
         private boolean timerActive = true;

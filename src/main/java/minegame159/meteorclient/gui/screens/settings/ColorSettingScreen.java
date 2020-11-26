@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.screens.settings;
 
 import minegame159.meteorclient.gui.GuiConfig;
@@ -204,8 +209,8 @@ public class ColorSettingScreen extends WindowScreen {
 
         @Override
         protected void onCalculateSize(GuiRenderer renderer) {
-            width = 100;
-            height = 100;
+            width = 100 * GuiConfig.INSTANCE.guiScale;
+            height = 100 * GuiConfig.INSTANCE.guiScale;
 
             if (fixedHeight != -1) {
                 height = fixedHeight;
@@ -339,8 +344,8 @@ public class ColorSettingScreen extends WindowScreen {
 
         @Override
         protected void onCalculateSize(GuiRenderer renderer) {
-            width = 100;
-            height = 10;
+            width = 100 * GuiConfig.INSTANCE.guiScale;
+            height = 10 * GuiConfig.INSTANCE.guiScale;
         }
 
         void calculateFromSetting(boolean calculateNow) {

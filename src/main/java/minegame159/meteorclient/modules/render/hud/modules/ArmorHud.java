@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.render.hud.modules;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -61,10 +66,6 @@ public class ArmorHud extends HudModule {
                         String message = Integer.toString(Math.round(((itemStack.getMaxDamage() - itemStack.getDamage()) * 100f) / (float) itemStack.getMaxDamage()));
                         double messageWidth = renderer.textWidth(message);
                         renderer.text(message, x + 18 * i * hud.armorScale() + 8 * hud.armorScale() - messageWidth / 2.0, y + (box.height - renderer.textHeight()), hud.primaryColor());
-                        break;
-                    }
-                    default: {
-                        RenderSystem.popMatrix();
                         break;
                     }
                 }

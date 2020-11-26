@@ -1,11 +1,16 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.screens.topbar;
 
 import minegame159.meteorclient.Config;
 import minegame159.meteorclient.gui.GuiConfig;
-import minegame159.meteorclient.modules.Category;
-import minegame159.meteorclient.modules.ModuleManager;
 import minegame159.meteorclient.gui.renderer.GuiRenderer;
 import minegame159.meteorclient.gui.widgets.*;
+import minegame159.meteorclient.modules.Category;
+import minegame159.meteorclient.modules.ModuleManager;
 import net.minecraft.client.MinecraftClient;
 
 public class TopBarModules extends TopBarScreen {

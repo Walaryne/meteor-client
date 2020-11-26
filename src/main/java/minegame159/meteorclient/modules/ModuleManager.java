@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules;
 
 import com.mojang.serialization.Lifecycle;
@@ -19,10 +24,7 @@ import minegame159.meteorclient.modules.render.*;
 import minegame159.meteorclient.modules.render.hud.HUD;
 import minegame159.meteorclient.settings.Setting;
 import minegame159.meteorclient.settings.SettingGroup;
-import minegame159.meteorclient.utils.Chat;
-import minegame159.meteorclient.utils.KeyAction;
-import minegame159.meteorclient.utils.Savable;
-import minegame159.meteorclient.utils.Utils;
+import minegame159.meteorclient.utils.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -31,6 +33,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
+import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -164,7 +167,7 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         }
 
         // Find module bound to that key
-        if (!onKeyOnlyBinding && MinecraftClient.getInstance().currentScreen == null) {
+        if (!onKeyOnlyBinding && MinecraftClient.getInstance().currentScreen == null && !Input.isPressed(GLFW.GLFW_KEY_F3)) {
             for (Module module : modules.values()) {
                 if (module.getKey() == event.key && (event.action == KeyAction.Press || module.toggleOnKeyRelease)) {
                     module.doAction();
@@ -195,6 +198,14 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
             }
         }
     });
+
+    public void disableAll() {
+        synchronized (active) {
+            for (ToggleModule module : active.toArray(new ToggleModule[0])) {
+                module.toggle();
+            }
+        }
+    }
 
     @Override
     public CompoundTag toTag() {
@@ -254,6 +265,7 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new SelfTrap());
         addModule(new SelfWeb());
         addModule(new AutoWeb());
+        addModule(new HoleFiller());
     }
 
     private void initPlayer() {
@@ -286,6 +298,7 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new NoMiningTrace());
         addModule(new EndermanLook());
         addModule(new NoBreakDelay());
+        addModule(new AntiCactus());
     }
 
     private void initMovement() {
@@ -369,6 +382,7 @@ public class ModuleManager extends Savable<ModuleManager> implements Listenable 
         addModule(new BetterChat());
         addModule(new FancyChat());
         addModule(new OffHandCrash());
+        addModule(new LiquidFiller());
     }
 
     public static class ModuleRegistry extends Registry<ToggleModule> {

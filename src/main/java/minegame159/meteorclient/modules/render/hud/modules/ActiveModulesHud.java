@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.render.hud.modules;
 
 import me.zero.alpine.listener.Listener;
@@ -6,8 +11,8 @@ import minegame159.meteorclient.events.ActiveModulesChangedEvent;
 import minegame159.meteorclient.events.ModuleVisibilityChangedEvent;
 import minegame159.meteorclient.modules.ModuleManager;
 import minegame159.meteorclient.modules.ToggleModule;
-import minegame159.meteorclient.modules.render.hud.HudRenderer;
 import minegame159.meteorclient.modules.render.hud.HUD;
+import minegame159.meteorclient.modules.render.hud.HudRenderer;
 
 import java.util.ArrayList;
 import java.util.List;

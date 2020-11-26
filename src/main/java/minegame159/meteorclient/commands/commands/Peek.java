@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.commands.commands;
 
 import minegame159.meteorclient.MeteorClient;
@@ -14,7 +19,7 @@ import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.text.Text;
 
 public class Peek extends Command {
-    private static ItemStack[] ITEMS = new ItemStack[27];
+    private static final ItemStack[] ITEMS = new ItemStack[27];
 
     public Peek() {
         super("peek", "Lets you see whats inside shulker boxes.");

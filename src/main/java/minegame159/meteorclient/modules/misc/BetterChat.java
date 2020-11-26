@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.misc;
 
 import minegame159.meteorclient.commands.commands.Ignore;
@@ -98,9 +103,8 @@ public class BetterChat extends ToggleModule {
         if (!isActive() || skipMessage) return false;
 
         if (ignoreEnabled.get() && ignoreOnMsg(message)) return true;
-        if (antiSpamEnabled.get() && antiSpamOnMsg(message, messageId, timestamp, messages, visibleMessages)) return true;
+        return antiSpamEnabled.get() && antiSpamOnMsg(message, messageId, timestamp, messages, visibleMessages);
         //return friendColorEnabled.get() && friendColorOnMsg(message);
-        return false;
     }
 
     // IGNORE

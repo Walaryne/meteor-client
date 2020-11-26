@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.combat;
 
 //Created by squidoodly 03/06/2020
@@ -65,6 +70,13 @@ public class BedAura extends ToggleModule {
             .name("place-mode")
             .description("The way beds are placed")
             .defaultValue(Mode.safe)
+            .build()
+    );
+
+    private final Setting<Boolean> selfToggle = sgGeneral.add(new BoolSetting.Builder()
+            .name("self-toggle")
+            .description("Toggles this in the overworld.")
+            .defaultValue(true)
             .build()
     );
 
@@ -190,7 +202,7 @@ public class BedAura extends ToggleModule {
         } catch (ConcurrentModificationException ignored) {
             return;
         }
-        if (Utils.getDimension() == Dimension.Overworld) {
+        if (selfToggle.get() && mc.world.getDimension().isBedWorking()) {
             Chat.warning(this, "You are in the overworld. Disabling!");
             this.toggle();
             return;

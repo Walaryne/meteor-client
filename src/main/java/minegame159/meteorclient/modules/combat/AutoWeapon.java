@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.combat;
 
 //Updated by squidoodly 15/06/2020
@@ -47,7 +52,7 @@ public class AutoWeapon extends ToggleModule {
     );
 
     @EventHandler
-    private Listener<AttackEntityEvent> onAttack = new Listener<>(event -> {
+    private final Listener<AttackEntityEvent> onAttack = new Listener<>(event -> {
             mc.player.inventory.selectedSlot = getBestWeapon();
     });
 

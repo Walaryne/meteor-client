@@ -1,7 +1,12 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.render.hud.modules;
 
-import minegame159.meteorclient.modules.render.hud.HudRenderer;
 import minegame159.meteorclient.modules.render.hud.HUD;
+import minegame159.meteorclient.modules.render.hud.HudRenderer;
 import minegame159.meteorclient.utils.Color;
 
 public abstract class DoubleTextHudModule extends HudModule {

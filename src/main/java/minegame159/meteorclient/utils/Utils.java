@@ -1,16 +1,17 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
-import minegame159.meteorclient.gui.GuiConfig;
 import minegame159.meteorclient.mixininterface.IMinecraftClient;
 import minegame159.meteorclient.mixininterface.IMinecraftServer;
-import minegame159.meteorclient.mixininterface.IVec3d;
 import minegame159.meteorclient.modules.Module;
 import minegame159.meteorclient.modules.ModuleManager;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.ShapeContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.options.ServerList;
@@ -22,18 +23,12 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.registry.Registry;
-import net.minecraft.util.shape.VoxelShapes;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
@@ -56,9 +51,6 @@ public class Utils {
     public static boolean firstTimeTitleScreen = true;
 
     private static final Random random = new Random();
-    private static final Vec3d eyesPos = new Vec3d(0, 0, 0);
-    private static final Vec3d vec1 = new Vec3d(0, 0, 0);
-    private static final Vec3d vec2 = new Vec3d(0, 0, 0);
     private static final DecimalFormat df;
 
     static {
@@ -140,14 +132,6 @@ public class Utils {
                 }
             }
         }
-    }
-
-    public static double getScaledWindowWidthGui() {
-        return mc.getWindow().getFramebufferWidth() / GuiConfig.INSTANCE.guiScale;
-    }
-
-    public static double getScaledWindowHeightGui() {
-        return mc.getWindow().getFramebufferHeight() / GuiConfig.INSTANCE.guiScale;
     }
 
     public static Object2IntMap<StatusEffect> createStatusEffectMap() {
@@ -261,6 +245,31 @@ public class Utils {
             case GLFW.GLFW_KEY_ENTER: return "Enter";
             case GLFW.GLFW_KEY_NUM_LOCK: return "Num Lock";
             case GLFW.GLFW_KEY_SPACE: return "Space";
+            case GLFW.GLFW_KEY_F1: return "F1";
+            case GLFW.GLFW_KEY_F2: return "F2";
+            case GLFW.GLFW_KEY_F3: return "F3";
+            case GLFW.GLFW_KEY_F4: return "F4";
+            case GLFW.GLFW_KEY_F5: return "F5";
+            case GLFW.GLFW_KEY_F6: return "F6";
+            case GLFW.GLFW_KEY_F7: return "F7";
+            case GLFW.GLFW_KEY_F8: return "F8";
+            case GLFW.GLFW_KEY_F9: return "F9";
+            case GLFW.GLFW_KEY_F10: return "F10";
+            case GLFW.GLFW_KEY_F11: return "F11";
+            case GLFW.GLFW_KEY_F12: return "F12";
+            case GLFW.GLFW_KEY_F13: return "F13";
+            case GLFW.GLFW_KEY_F14: return "F14";
+            case GLFW.GLFW_KEY_F15: return "F15";
+            case GLFW.GLFW_KEY_F16: return "F16";
+            case GLFW.GLFW_KEY_F17: return "F17";
+            case GLFW.GLFW_KEY_F18: return "F18";
+            case GLFW.GLFW_KEY_F19: return "F19";
+            case GLFW.GLFW_KEY_F20: return "F20";
+            case GLFW.GLFW_KEY_F21: return "F21";
+            case GLFW.GLFW_KEY_F22: return "F22";
+            case GLFW.GLFW_KEY_F23: return "F23";
+            case GLFW.GLFW_KEY_F24: return "F24";
+            case GLFW.GLFW_KEY_F25: return "F25";
             default:
                 String keyName = GLFW.glfwGetKeyName(key, 0);
                 if (keyName == null) return "Unknown";
@@ -284,53 +293,6 @@ public class Utils {
         }
 
         return new byte[0];
-    }
-
-    public static boolean place(BlockState blockState, BlockPos blockPos, boolean swingHand, boolean checkFaceVisibility, boolean checkForEntities) {
-        // Calculate eyes pos
-        ((IVec3d) eyesPos).set(mc.player.getX(), mc.player.getY() + mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ());
-
-        // Check if current block is replaceable
-        if (!mc.world.getBlockState(blockPos).getMaterial().isReplaceable()) return false;
-
-        for (Direction side : Direction.values()) {
-            BlockPos neighbor = blockPos.offset(side);
-            Direction side2 = side.getOpposite();
-
-            // Check if side is visible (facing away from player)
-            if (checkFaceVisibility) {
-                ((IVec3d) vec1).set(blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
-                ((IVec3d) vec2).set(neighbor.getX() + 0.5, neighbor.getY() + 0.5, neighbor.getZ() + 0.5);
-                if (eyesPos.squaredDistanceTo(vec1) >= eyesPos.squaredDistanceTo(vec2)) continue;
-            }
-
-            // Check if neighbor can be right clicked
-            if (mc.world.getBlockState(neighbor).getOutlineShape(mc.world, blockPos) == VoxelShapes.empty()) continue;
-
-            // Calculate hit pos
-            ((IVec3d) vec1).set(neighbor.getX() + 0.5 + side2.getVector().getX() * 0.5, neighbor.getY() + 0.5 + side2.getVector().getY()     * 0.5, neighbor.getZ() + 0.5 + side2.getVector().getZ() * 0.5);
-
-            // Check if hitVec is within range (4.25 blocks)
-            if(eyesPos.squaredDistanceTo(vec1) > 18.0625) continue;
-
-            // Check if intersects entities
-            if (checkForEntities && !mc.world.canPlace(blockState, blockPos, ShapeContext.absent())) continue;
-
-            // Place block
-            PlayerMoveC2SPacket.LookOnly packet = new PlayerMoveC2SPacket.LookOnly(getNeededYaw(vec1), getNeededPitch(vec1), mc.player.isOnGround());
-            mc.player.networkHandler.sendPacket(packet);
-            mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(vec1, side2, neighbor, false));
-            mc.interactionManager.interactItem(mc.player, mc.world, Hand.MAIN_HAND);
-            if (swingHand) mc.player.swingHand(Hand.MAIN_HAND);
-            else mc.getNetworkHandler().sendPacket(new HandSwingC2SPacket(Hand.MAIN_HAND));
-
-            return true;
-        }
-
-        return false;
-    }
-    public static boolean place(BlockState blockState, BlockPos blockPos) {
-        return place(blockState, blockPos, true, true, true);
     }
 
     public static float getNeededYaw(Vec3d vec) {

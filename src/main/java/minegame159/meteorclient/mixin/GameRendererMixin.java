@@ -41,6 +41,8 @@ public abstract class GameRendererMixin {
 
     @Shadow protected abstract void bobView(MatrixStack matrixStack, float f);
 
+    @Shadow public abstract void reset();
+
     private boolean a = false;
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
@@ -63,13 +65,15 @@ public abstract class GameRendererMixin {
     private void onRenderWorld(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo info) {
         if (!Utils.canUpdate()) return;
 
-        client.getProfiler().swap("meteor-client_render");
+        client.getProfiler().push("meteor-client_render");
 
         RenderEvent event = EventStore.renderEvent(tickDelta, camera.getPos().x, camera.getPos().y, camera.getPos().z, matrix);
 
         Renderer.begin(event);
         MeteorClient.EVENT_BUS.post(event);
         Renderer.end();
+
+        client.getProfiler().pop();
     }
 
     @Inject(method = "updateTargetedEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/projectile/ProjectileUtil;raycast(Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Vec3d;Lnet/minecraft/util/math/Box;Ljava/util/function/Predicate;D)Lnet/minecraft/util/hit/EntityHitResult;"), cancellable = true)
@@ -97,17 +101,6 @@ public abstract class GameRendererMixin {
     @Inject(method = "bobViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void onBobViewWhenHurt(MatrixStack matrixStack, float f, CallbackInfo info) {
         if (ModuleManager.INSTANCE.get(NoRender.class).noHurtCam()) info.cancel();
-    }
-
-    @Redirect(at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/render/GameRenderer;bobView(Lnet/minecraft/client/util/math/MatrixStack;F)V",
-            ordinal = 0),
-            method = {
-                    "renderWorld(FJLnet/minecraft/client/util/math/MatrixStack;)V"})
-    private void onRenderWorldViewBobbing(GameRenderer gameRenderer, MatrixStack matrixStack, float partialTicks)
-    {
-        if(ModuleManager.INSTANCE.get(NoRender.class).noBobbingTracers()) return;
-        bobView(matrixStack, partialTicks);
     }
 
     @Inject(method = "showFloatingItem", at = @At("HEAD"), cancellable = true)

@@ -1,14 +1,19 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.screens;
 
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
 import minegame159.meteorclient.events.ModuleBindChangedEvent;
+import minegame159.meteorclient.gui.widgets.*;
 import minegame159.meteorclient.modules.Module;
 import minegame159.meteorclient.modules.ModuleManager;
 import minegame159.meteorclient.modules.ToggleModule;
-import minegame159.meteorclient.gui.widgets.*;
+import minegame159.meteorclient.utils.Utils;
 import net.minecraft.client.MinecraftClient;
-import org.lwjgl.glfw.GLFW;
 
 public class ModuleScreen extends WindowScreen {
     private Module module;
@@ -109,6 +114,6 @@ public class ModuleScreen extends WindowScreen {
     });
 
     private String getBindLabelText() {
-        return "Bind: " + (module.getKey() == -1 ? "none" : GLFW.glfwGetKeyName(module.getKey(), 0));
+        return "Bind: " + (module.getKey() == -1 ? "none" :  Utils.getKeyName(module.getKey()));
     }
 }

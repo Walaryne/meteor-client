@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.combat;
 
 import me.zero.alpine.listener.EventHandler;
@@ -8,6 +13,7 @@ import minegame159.meteorclient.friends.FriendManager;
 import minegame159.meteorclient.modules.Category;
 import minegame159.meteorclient.modules.ToggleModule;
 import minegame159.meteorclient.settings.*;
+import minegame159.meteorclient.utils.PlayerUtils;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -114,10 +120,7 @@ public class AutoAnvil extends ToggleModule {
             mc.player.inventory.selectedSlot = anvilSlot;
             BlockPos targetPos = target.getBlockPos().up();
 
-            if (mc.world.getBlockState(targetPos.add(0, height.get(), 0)).isAir()) {
-                mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(target.getPos().add(0, height.get(), 0), Direction.UP, targetPos.add(0, height.get(), 0), false));
-                mc.player.swingHand(Hand.MAIN_HAND);
-            }
+            PlayerUtils.placeBlock(targetPos.add(0, height.get(), 0));
 
             mc.player.inventory.selectedSlot = prevSlot;
         }

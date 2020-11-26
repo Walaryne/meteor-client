@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.combat;
 
 //Updated by squidoodly 18/07/2020
@@ -48,7 +53,7 @@ public class Criticals extends ToggleModule {
     private HandSwingC2SPacket swingPacket;
     private boolean sendPackets;
     private int sendTimer;
-    private boolean wasToggled = false;
+    private final boolean wasToggled = false;
 
     @Override
     public void onActivate() {

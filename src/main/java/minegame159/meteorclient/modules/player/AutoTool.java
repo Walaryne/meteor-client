@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.player;
 
 //Updated by squidoodly 15/06/2020
@@ -5,8 +10,8 @@ package minegame159.meteorclient.modules.player;
 import me.zero.alpine.event.EventPriority;
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
-import minegame159.meteorclient.events.StartBreakingBlockEvent;
 import minegame159.meteorclient.events.PostTickEvent;
+import minegame159.meteorclient.events.StartBreakingBlockEvent;
 import minegame159.meteorclient.mixin.AxeItemAccessor;
 import minegame159.meteorclient.mixin.HoeItemAccessor;
 import minegame159.meteorclient.mixin.PickaxeItemAccessor;

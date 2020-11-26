@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import minegame159.meteorclient.Config;
@@ -44,6 +49,8 @@ public class ProfileUtils {
     }
 
     public static void load(String profile) {
+        ModuleManager.INSTANCE.disableAll();
+
         File folder = new File(FOLDER, profile);
 
         Config.INSTANCE.load(new File(folder, Config.INSTANCE.getFile().getName()));

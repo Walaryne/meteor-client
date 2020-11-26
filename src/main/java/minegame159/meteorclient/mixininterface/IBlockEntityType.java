@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixininterface;
 
 import net.minecraft.block.Block;
@@ -5,5 +10,5 @@ import net.minecraft.block.Block;
 import java.util.Set;
 
 public interface IBlockEntityType {
-    public Set<Block> getBlocks();
+    Set<Block> getBlocks();
 }

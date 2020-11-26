@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.player;
 
 import me.zero.alpine.listener.EventHandler;
@@ -89,7 +94,7 @@ public class AutoFish extends ToggleModule {
     }
 
     @EventHandler
-    private Listener<PlaySoundPacketEvent> onPlaySoundPacket = new Listener<>(event -> {
+    private final Listener<PlaySoundPacketEvent> onPlaySoundPacket = new Listener<>(event -> {
         PlaySoundS2CPacket p = event.packet;
         FishingBobberEntity b = mc.player.fishHook;
 
@@ -103,7 +108,7 @@ public class AutoFish extends ToggleModule {
     });
 
     @EventHandler
-    private Listener<PostTickEvent> onTick = new Listener<>(event -> {
+    private final Listener<PostTickEvent> onTick = new Listener<>(event -> {
         // Auto cast
         if (autoCastCheckTimer <= 0) {
             autoCastCheckTimer = 30;
@@ -143,7 +148,7 @@ public class AutoFish extends ToggleModule {
     });
 
     @EventHandler
-    private Listener<KeyEvent> onKey = new Listener<>(event -> {
+    private final Listener<KeyEvent> onKey = new Listener<>(event -> {
         if (mc.options.keyUse.isPressed()) ticksEnabled = false;
     });
 }

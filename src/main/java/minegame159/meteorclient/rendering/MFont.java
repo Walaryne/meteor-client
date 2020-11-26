@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.rendering;
 
 import net.minecraft.client.render.VertexFormats;
@@ -12,6 +17,7 @@ import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 public class MFont {
@@ -37,7 +43,7 @@ public class MFont {
             byte[] bytes = baos.toByteArray();
 
             ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-            data.flip();
+            ((Buffer) data).flip();
 
             return new NativeImageBackedTexture(NativeImage.read(data));
         } catch (Exception e) {

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.screens.topbar;
 
 import minegame159.meteorclient.gui.GuiConfig;
@@ -21,8 +26,8 @@ public class TopBarGui extends TopBarWindowScreen {
                 .name("gui-scale")
                 .description("Scale of the GUI.")
                 .defaultValue(1)
-                .min(0.5)
-                .max(4)
+                .min(1)
+                .max(3)
                 .noSlider()
                 .onChanged(aDouble -> {
                     GuiConfig.INSTANCE.guiScale = aDouble;

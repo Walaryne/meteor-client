@@ -1,9 +1,13 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixin;
 
 import minegame159.meteorclient.MeteorClient;
 import minegame159.meteorclient.events.EventStore;
 import minegame159.meteorclient.events.packets.ReceivePacketEvent;
-import minegame159.meteorclient.utils.Utils;
 import net.minecraft.network.ClientConnection;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.PacketListener;
@@ -12,12 +16,15 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.net.InetAddress;
 
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
     @Inject(method = "disconnect", at = @At("HEAD"))
     private void onDisconnect(Text disconnectReason, CallbackInfo info) {
-        if (Utils.canUpdate() && !MeteorClient.IS_DISCONNECTING) {
+        if (!MeteorClient.IS_DISCONNECTING) {
             MeteorClient.IS_DISCONNECTING = true;
             MeteorClient.EVENT_BUS.post(EventStore.gameDisconnectedEvent(disconnectReason));
         }
@@ -29,5 +36,10 @@ public class ClientConnectionMixin {
         MeteorClient.EVENT_BUS.post(event);
 
         if (event.isCancelled()) info.cancel();
+    }
+
+    @Inject(method = "connect", at = @At("HEAD"))
+    private static void onConnect(InetAddress address, int port, boolean shouldUseNativeTransport, CallbackInfoReturnable<ClientConnection> info) {
+        MeteorClient.EVENT_BUS.post(EventStore.connectToServerEvent());
     }
 }

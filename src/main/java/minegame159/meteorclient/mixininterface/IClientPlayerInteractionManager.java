@@ -1,11 +1,16 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixininterface;
 
 import net.minecraft.util.math.BlockPos;
 
 public interface IClientPlayerInteractionManager {
-    public void syncSelectedSlot2();
+    void syncSelectedSlot2();
 
-    public double getBreakingProgress();
+    double getBreakingProgress();
 
-    public BlockPos getCurrentBreakingBlockPos();
+    BlockPos getCurrentBreakingBlockPos();
 }

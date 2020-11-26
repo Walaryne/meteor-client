@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.movement;
 
 import me.zero.alpine.listener.EventHandler;
@@ -6,16 +11,13 @@ import minegame159.meteorclient.events.PostTickEvent;
 import minegame159.meteorclient.modules.Category;
 import minegame159.meteorclient.modules.ToggleModule;
 import minegame159.meteorclient.settings.*;
-import minegame159.meteorclient.utils.Utils;
+import minegame159.meteorclient.utils.PlayerUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FallingBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.shape.VoxelShapes;
 
 import java.util.ArrayList;
@@ -38,13 +40,6 @@ public class Scaffold extends ToggleModule {
             .build()
     );
 
-    private final Setting<Boolean> airPlace = sg.add(new BoolSetting.Builder()
-            .name("air-place")
-            .description("Places scaffold blocks in mid air if it can.")
-            .defaultValue(true)
-            .build()
-    );
-
     private final Setting<Integer> radius = sg.add(new IntSetting.Builder()
             .name("radius")
             .description("Radius.")
@@ -52,13 +47,6 @@ public class Scaffold extends ToggleModule {
             .min(1)
             .sliderMin(1)
             .sliderMax(7)
-            .build()
-    );
-
-    private final Setting<Boolean> swingHand = sg.add(new BoolSetting.Builder()
-            .name("swing-hand")
-            .description("Only client side.")
-            .defaultValue(false)
             .build()
     );
 
@@ -80,8 +68,17 @@ public class Scaffold extends ToggleModule {
     private BlockState blockState, slotBlockState;
     private int slot, prevSelectedSlot;
 
+    private boolean lastWasSneaking;
+    private double lastSneakingY;
+
     public Scaffold() {
         super(Category.Movement, "scaffold", "Places blocks under you.");
+    }
+
+    @Override
+    public void onActivate() {
+        lastWasSneaking = mc.player.input.sneaking;
+        if (lastWasSneaking) lastSneakingY = mc.player.getY();
     }
 
     @EventHandler
@@ -89,6 +86,15 @@ public class Scaffold extends ToggleModule {
         if (fastTower.get() && !mc.world.getBlockState(setPos(0, -1, 0)).getMaterial().isReplaceable() && mc.options.keyJump.isPressed() && findSlot(mc.world.getBlockState(setPos(0, -1, 0))) != -1 && mc.player.sidewaysSpeed == 0 &&mc.player.forwardSpeed == 0) mc.player.jump();
         blockState = mc.world.getBlockState(setPos(0, -1, 0));
         if (!blockState.getMaterial().isReplaceable()) return;
+
+        // Go downwards if pressing shift
+        boolean lastWasSneaking = this.lastWasSneaking;
+        this.lastWasSneaking = mc.player.input.sneaking;
+        if (mc.player.input.sneaking) {
+            if (!lastWasSneaking) lastSneakingY = mc.player.getY();
+
+            if (lastSneakingY - mc.player.getY() < 0.1) return;
+        }
 
         // Search for block in hotbar
         slot = findSlot(blockState);
@@ -98,7 +104,7 @@ public class Scaffold extends ToggleModule {
         prevSelectedSlot = mc.player.inventory.selectedSlot;
         mc.player.inventory.selectedSlot = slot;
 
-        if (!airPlace.get()) {
+        /*if (!airPlace.get()) {
             // Check if has solid horizontal neighbour
             boolean hasNeighbour = true;
             BlockState neighbourUnder = mc.world.getBlockState(setPos(0, -1 - 1, 0));
@@ -128,9 +134,11 @@ public class Scaffold extends ToggleModule {
 
             // Place block
             Utils.place(slotBlockState, setPos(0, -1, 0), swingHand.get(), false, false);
-        } else {
-            mc.interactionManager.interactBlock(mc.player, mc.world, Hand.MAIN_HAND, new BlockHitResult(mc.player.getPos().add(0, -1, 0), Direction.UP, mc.player.getBlockPos().down(), false));
-        }
+            if (mc.player.input.sneaking) this.lastWasSneaking = false;
+        } else {*/
+        PlayerUtils.placeBlock(mc.player.getBlockPos().down());
+        if (mc.player.input.sneaking) this.lastWasSneaking = false;
+        //}
 
         // Place blocks around if radius is bigger than 1
         for (int i = 1; i < radius.get(); i++) {
@@ -140,33 +148,33 @@ public class Scaffold extends ToggleModule {
             // Forward
             for (int j = 0; j < count; j++) {
                 if (!findBlock()) return;
-                Utils.place(slotBlockState, setPos(j - countHalf, -1, i), swingHand.get(), false, false);
+                PlayerUtils.placeBlock(setPos(j - countHalf, -1, i));
             }
             // Backward
             for (int j = 0; j < count; j++) {
                 if (!findBlock()) return;
-                Utils.place(slotBlockState, setPos(j - countHalf, -1, -i), swingHand.get(), false, false);
+                PlayerUtils.placeBlock(setPos(j - countHalf, -1, -i));
             }
             // Right
             for (int j = 0; j < count; j++) {
                 if (!findBlock()) return;
-                Utils.place(slotBlockState, setPos(i, -1, j - countHalf), swingHand.get(), false, false);
+                PlayerUtils.placeBlock(setPos(i, -1, j - countHalf));
             }
             // Left
             for (int j = 0; j < count; j++) {
                 if (!findBlock()) return;
-                Utils.place(slotBlockState, setPos(-i, -1, j - countHalf), swingHand.get(), false, false);
+                PlayerUtils.placeBlock(setPos(-i, -1, j - countHalf));
             }
 
             // Diagonals
             if (!findBlock()) return;
-            Utils.place(slotBlockState, setPos(-i, -1, i), swingHand.get(), false, false);
+            PlayerUtils.placeBlock(setPos(-i, -1, i));
             if (!findBlock()) return;
-            Utils.place(slotBlockState, setPos(i, -1, i), swingHand.get(), false, false);
+            PlayerUtils.placeBlock(setPos(i, -1, i));
             if (!findBlock()) return;
-            Utils.place(slotBlockState, setPos(-i, -1, -i), swingHand.get(), false, false);
+            PlayerUtils.placeBlock(setPos(-i, -1, -i));
             if (!findBlock()) return;
-            Utils.place(slotBlockState, setPos(i, -1, -i), swingHand.get(), false, false);
+            PlayerUtils.placeBlock(setPos(i, -1, -i));
         }
 
         // Change back to previous slot

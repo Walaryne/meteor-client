@@ -1,8 +1,14 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import net.minecraft.network.Packet;
-import java.util.Map;
+
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 public class PacketUtils {

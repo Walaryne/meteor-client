@@ -1,5 +1,10 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixininterface;
 
 public interface IKeyBinding {
-    public void setPressed(boolean pressed);
+    void setPressed(boolean pressed);
 }

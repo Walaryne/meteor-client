@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient;
 
 import com.g00fy2.versioncompare.Version;
@@ -8,6 +13,7 @@ import minegame159.meteorclient.utils.Color;
 import minegame159.meteorclient.utils.NbtUtils;
 import minegame159.meteorclient.utils.Savable;
 import minegame159.meteorclient.utils.Utils;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.nbt.CompoundTag;
 
 import java.io.File;
@@ -18,6 +24,7 @@ public class Config extends Savable<Config> {
     public static Config INSTANCE;
 
     public final Version version = new Version("0.3.7");
+    public String devBuild;
     private String prefix = ".";
     public GuiConfig guiConfig = new GuiConfig();
 
@@ -27,6 +34,8 @@ public class Config extends Savable<Config> {
 
     public Config() {
         super(new File(MeteorClient.FOLDER, "config.nbt"));
+
+        devBuild = FabricLoader.getInstance().getModContainer("meteor-client").get().getMetadata().getCustomValue("meteor-client:devbuild").getAsString();
     }
 
     public void setPrefix(String prefix) {

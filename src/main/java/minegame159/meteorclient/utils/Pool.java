@@ -1,11 +1,16 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Pool<T> {
-    private List<T> items = new ArrayList<>();
-    private Producer<T> producer;
+    private final List<T> items = new ArrayList<>();
+    private final Producer<T> producer;
 
     public Pool(Producer<T> producer) {
         this.producer = producer;

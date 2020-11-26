@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixin;
 
 import minegame159.meteorclient.modules.ModuleManager;
@@ -73,7 +78,7 @@ public abstract class WorldRendererMixin {
         Outlines.beginRender();
     }
 
-    @Inject(method = "renderEntity", at = @At("INVOKE"), cancellable = true)
+    @Inject(method = "renderEntity", at = @At("HEAD"), cancellable = true)
     private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, CallbackInfo info) {
         if (vertexConsumers == Outlines.vertexConsumerProvider) return;
 

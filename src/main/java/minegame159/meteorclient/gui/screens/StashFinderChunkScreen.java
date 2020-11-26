@@ -1,8 +1,13 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.screens;
 
-import minegame159.meteorclient.modules.misc.StashFinder;
 import minegame159.meteorclient.gui.widgets.WHorizontalSeparator;
 import minegame159.meteorclient.gui.widgets.WLabel;
+import minegame159.meteorclient.modules.misc.StashFinder;
 
 public class StashFinderChunkScreen extends WindowScreen {
     public StashFinderChunkScreen(StashFinder.Chunk chunk) {

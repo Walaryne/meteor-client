@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.misc;
 
 import me.zero.alpine.listener.EventHandler;
@@ -24,14 +29,14 @@ public class AutoSign extends ToggleModule {
     }
 
     @EventHandler
-    private Listener<SendPacketEvent> onSendPacket = new Listener<>(event -> {
+    private final Listener<SendPacketEvent> onSendPacket = new Listener<>(event -> {
         if (!(event.packet instanceof UpdateSignC2SPacket)) return;
 
         text = ((UpdateSignC2SPacket) event.packet).getText();
     });
 
     @EventHandler
-    private Listener<OpenScreenEvent> onOpenScreen = new Listener<>(event -> {
+    private final Listener<OpenScreenEvent> onOpenScreen = new Listener<>(event -> {
         if (!(event.screen instanceof SignEditScreen) || text == null) return;
 
         SignBlockEntity sign = ((ISignEditScreen) event.screen).getSign();

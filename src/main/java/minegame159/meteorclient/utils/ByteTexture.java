@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -7,6 +12,7 @@ import net.minecraft.resource.ResourceManager;
 import org.lwjgl.BufferUtils;
 
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11C.*;
@@ -30,7 +36,7 @@ public class ByteTexture extends AbstractTexture {
 
     private void upload(int width, int height, byte[] data, boolean text) {
         ByteBuffer buffer = BufferUtils.createByteBuffer(data.length).put(data);
-        buffer.flip();
+        ((Buffer) buffer).flip();
 
         upload(width, height, buffer, text);
     }

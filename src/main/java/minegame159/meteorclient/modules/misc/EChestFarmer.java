@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.misc;
 
 //Created by squidoodly 20/06/2020
@@ -14,8 +19,8 @@ import minegame159.meteorclient.settings.IntSetting;
 import minegame159.meteorclient.settings.Setting;
 import minegame159.meteorclient.settings.SettingGroup;
 import minegame159.meteorclient.utils.InvUtils;
+import minegame159.meteorclient.utils.PlayerUtils;
 import net.minecraft.block.BlockState;
-import minegame159.meteorclient.utils.Utils;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -99,7 +104,7 @@ public class EChestFarmer extends ToggleModule {
                 } else if (mc.world.getBlockState(pos.up()).getBlock() == Blocks.AIR) {
                     if (mc.player.inventory.selectedSlot != itemResult.slot)
                     mc.player.inventory.selectedSlot = itemResult.slot;
-                    Utils.place(Blocks.ENDER_CHEST.getDefaultState(), pos.up());
+                    PlayerUtils.placeBlock(pos.up());
                 }
 
             }

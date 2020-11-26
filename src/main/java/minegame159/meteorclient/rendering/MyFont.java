@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.rendering;
 
 import minegame159.meteorclient.utils.ByteTexture;
@@ -14,6 +19,7 @@ import org.lwjgl.stb.STBTruetype;
 import org.lwjgl.system.MemoryStack;
 
 import java.io.File;
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 
@@ -37,7 +43,7 @@ public class MyFont {
         // Read file
         byte[] bytes = Utils.readBytes(file);
         ByteBuffer buffer = BufferUtils.createByteBuffer(bytes.length).put(bytes);
-        buffer.flip();
+        ((Buffer) buffer).flip();
 
         // Initialize font
         STBTTFontinfo fontInfo = STBTTFontinfo.create();
@@ -104,7 +110,7 @@ public class MyFont {
         return getWidth(string, string.length());
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 

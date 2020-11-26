@@ -1,12 +1,17 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixininterface;
 
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
 public interface IDisconnectedScreen {
-    public Screen getParent();
+    Screen getParent();
 
-    public Text getReason();
+    Text getReason();
 
-    public int getReasonHeight();
+    int getReasonHeight();
 }

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.movement;
 
 import me.zero.alpine.listener.EventHandler;
@@ -39,7 +44,7 @@ public class AutoJump extends ToggleModule {
     }
 
     @EventHandler
-    private Listener<PostTickEvent> onTick = new Listener<>(event -> {
+    private final Listener<PostTickEvent> onTick = new Listener<>(event -> {
         if (!mc.player.isOnGround() || mc.player.isSneaking()) return;
 
         if (jump()) mc.player.jump();

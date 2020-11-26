@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.widgets;
 
 import minegame159.meteorclient.gui.renderer.GuiRenderer;
@@ -141,12 +146,14 @@ public abstract class WWidget {
     // Events
 
     protected boolean propagateEvents(WWidget widget) {
-        return true;
+        return !(parent instanceof WView) || parent.propagateEvents(widget);
     }
 
     public void mouseMoved(double mouseX, double mouseY) {
         for (Cell<?> cell : cells) {
-            if (propagateEvents(cell.getWidget())) cell.getWidget().mouseMoved(mouseX, mouseY);
+            if (propagateEvents(cell.getWidget())) {
+                cell.getWidget().mouseMoved(mouseX, mouseY);
+            }
         }
         boolean preMouseOver = mouseOver;
         mouseOver = isOver(mouseX, mouseY);

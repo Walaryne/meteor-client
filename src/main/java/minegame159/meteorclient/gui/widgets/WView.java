@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.gui.widgets;
 
 import minegame159.meteorclient.gui.GuiConfig;
@@ -11,8 +16,10 @@ public class WView extends WTable {
     private boolean hasScrollBar;
     private double actualHeight;
 
-    private boolean onlyWhenMouseOver;
+    private final boolean onlyWhenMouseOver;
     private double scrollHeight, lastScrollHeight;
+
+    private boolean moveWidgetsOnCalculatePositions;
 
     public WView(boolean onlyWhenMouseOver) {
         this.onlyWhenMouseOver = onlyWhenMouseOver;
@@ -32,6 +39,16 @@ public class WView extends WTable {
         recalculateScroll();
     }
 
+    @Override
+    protected void onCalculateWidgetPositions() {
+        super.onCalculateWidgetPositions();
+
+        if (moveWidgetsOnCalculatePositions) {
+            moveWidgets();
+            moveWidgetsOnCalculatePositions = false;
+        }
+    }
+
     private void recalculateScroll() {
         boolean hadScrollBar = hasScrollBar;
 
@@ -41,13 +58,17 @@ public class WView extends WTable {
             height = maxHeight;
 
             if (hadScrollBar) {
-                moveWidgets();
+                lastScrollHeight = 0;
+                moveWidgetsOnCalculatePositions = true;
             } else {
                 scrollHeight = 0;
                 lastScrollHeight = 0;
             }
         } else {
-            if (hadScrollBar) moveWidgets(scrollHeight);
+            if (hadScrollBar) {
+                lastScrollHeight = 0;
+                moveWidgetsOnCalculatePositions = true;
+            }
             hasScrollBar = false;
             actualHeight = height;
         }
@@ -93,5 +114,11 @@ public class WView extends WTable {
         if (scissor) renderer.beginScissor(x, y, width, height);
         super.render(renderer, mouseX, mouseY, delta);
         if (scissor) renderer.endScissor();
+    }
+
+    @Override
+    protected boolean propagateEvents(WWidget widget) {
+        return ((widget.y >= y && widget.y <= y + height) || (widget.y + widget.height >= y && widget.y + widget.height <= y + height)) ||
+                ((y >= widget.y && y <= widget.y + widget.height) || (y + height >= widget.y && y + height <= widget.y + widget.height));
     }
 }

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import net.minecraft.client.MinecraftClient;
@@ -11,7 +16,7 @@ public class InvUtils {
     public static final int OFFHAND_SLOT = 45;
     private static final MinecraftClient mc = MinecraftClient.getInstance();
 
-    private static FindItemResult findItemResult = new FindItemResult();
+    private static final FindItemResult findItemResult = new FindItemResult();
 
     public static void clickSlot(int slot, int button, SlotActionType action) {
         mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slot, button, action, mc.player);

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixin;
 
 import minegame159.meteorclient.modules.ModuleManager;
@@ -103,7 +108,7 @@ public class ShulkerBoxBlockMixin {
                 }
 
                 if (totalItemStacks - displaysItemStacks > 0) {
-                    tooltip.add((new TranslatableText("container.shulkerBox.more", new Object[]{totalItemStacks - displaysItemStacks})).formatted(Formatting.ITALIC));
+                    tooltip.add((new TranslatableText("container.shulkerBox.more", totalItemStacks - displaysItemStacks)).formatted(Formatting.ITALIC));
                 }
 
                 tooltip.add(new LiteralText(""));

@@ -1,9 +1,14 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.modules.player;
 
 import me.zero.alpine.listener.EventHandler;
 import me.zero.alpine.listener.Listener;
-import minegame159.meteorclient.events.StartBreakingBlockEvent;
 import minegame159.meteorclient.events.PostTickEvent;
+import minegame159.meteorclient.events.StartBreakingBlockEvent;
 import minegame159.meteorclient.modules.Category;
 import minegame159.meteorclient.modules.ToggleModule;
 import minegame159.meteorclient.settings.BoolSetting;
@@ -44,6 +49,8 @@ public class PacketMine extends ToggleModule {
 
     @EventHandler
     private final Listener<StartBreakingBlockEvent> onStartBreakingBlock = new Listener<>(event -> {
+        if (mc.world.getBlockState(event.blockPos).getHardness(mc.world, event.blockPos) < 0) return;
+
         Block block = blockPool.get();
         block.blockPos = event.blockPos;
         block.direction = event.direction;

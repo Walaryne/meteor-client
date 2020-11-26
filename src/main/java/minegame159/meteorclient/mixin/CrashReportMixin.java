@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixin;
 
 import minegame159.meteorclient.Config;
@@ -16,11 +21,15 @@ import java.util.List;
 @Mixin(CrashReport.class)
 public class CrashReportMixin {
     @Inject(method = "addStackTrace", at = @At("TAIL"))
-    private void onAsString(StringBuilder sb, CallbackInfo info) {
+    private void onAddStackTrace(StringBuilder sb, CallbackInfo info) {
         if (ModuleManager.INSTANCE != null) {
             sb.append("\n\n");
             sb.append("-- Meteor Client --\n");
             sb.append("Version: ").append(Config.INSTANCE.version.getOriginalString()).append("\n");
+
+            if (!Config.INSTANCE.devBuild.isEmpty()) {
+                sb.append("Dev Build: ").append(Config.INSTANCE.devBuild).append("\n");
+            }
 
             for (Category category : ModuleManager.CATEGORIES) {
                 List<Module> modules = ModuleManager.INSTANCE.getGroup(category);

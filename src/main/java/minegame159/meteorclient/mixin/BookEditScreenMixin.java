@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.mixin;
 
 import it.unimi.dsi.fastutil.io.FastByteArrayOutputStream;
@@ -58,8 +63,13 @@ public abstract class BookEditScreenMixin extends Screen {
                 e.printStackTrace();
             }
 
-            GLFW.glfwSetClipboardString(MinecraftClient.getInstance().getWindow().getHandle(), Base64.getEncoder().encodeToString(bytes.array));
+            try {
+                GLFW.glfwSetClipboardString(MinecraftClient.getInstance().getWindow().getHandle(), Base64.getEncoder().encodeToString(bytes.array));
+            } catch (OutOfMemoryError exception) {
+                GLFW.glfwSetClipboardString(MinecraftClient.getInstance().getWindow().getHandle(), exception.toString());
+            }
         }));
+
         addButton(new ButtonWidget(4, 4 + 16 + 4, 70, 16, new LiteralText("Paste"), button -> {
             String clipboard = GLFW.glfwGetClipboardString(MinecraftClient.getInstance().getWindow().getHandle());
             if (clipboard == null) return;

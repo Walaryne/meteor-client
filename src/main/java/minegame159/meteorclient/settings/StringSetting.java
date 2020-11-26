@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.settings;
 
 import minegame159.meteorclient.gui.widgets.WTextBox;
@@ -24,7 +29,7 @@ public class StringSetting extends Setting<String> {
 
     @Override
     public void reset(boolean callbacks) {
-        value = new String(defaultValue);
+        value = defaultValue;
         if (callbacks) {
             resetWidget();
             changed();

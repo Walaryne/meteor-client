@@ -1,9 +1,14 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import net.minecraft.nbt.CompoundTag;
 
 public class Color implements ISerializable<Color> {
-    private static byte[] bytes = new byte[4];
+    private static final byte[] bytes = new byte[4];
 
     public int r, g, b, a;
 

@@ -1,3 +1,8 @@
+/*
+ * This file is part of the Meteor Client distribution (https://github.com/MeteorDevelopment/meteor-client/).
+ * Copyright (c) 2020 Meteor Development.
+ */
+
 package minegame159.meteorclient.utils;
 
 import net.minecraft.nbt.CompoundTag;
@@ -38,10 +43,10 @@ public class NbtUtils {
     }
 
     public interface ToKey<T> {
-        public T toKey(String string);
+        T toKey(String string);
     }
 
     public interface ToValue<T> {
-        public T toValue(Tag tag);
+        T toValue(Tag tag);
     }
 }
